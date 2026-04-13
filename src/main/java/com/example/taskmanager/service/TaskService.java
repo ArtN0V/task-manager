@@ -1,10 +1,11 @@
-package service;
+package com.example.taskmanager.service;
 
-import dto.TaskCreateRequest;
-import dto.TaskResponse;
-import dto.TaskStatus;
+import com.example.taskmanager.dto.TaskCreateRequest;
+import com.example.taskmanager.dto.TaskResponse;
+import com.example.taskmanager.dto.TaskStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,17 @@ public class TaskService {
     private final List<TaskResponse> tasks = new ArrayList<>();
     
     private Long idCounter = 1L;
+
+    public TaskService() {
+        tasks.add( new TaskResponse(
+                idCounter++,
+                "Сделать логин",
+                "Форма + валидация",
+                LocalDate.of(2026, 4, 1),
+                "Ivan",
+                TaskStatus.IN_PROGRESS
+        ));
+    }
 
     public List<TaskResponse> getAll() {
         return tasks;
@@ -51,5 +63,6 @@ public class TaskService {
 
     public void delete(Long id) {
         tasks.removeIf(task -> task.getId().equals(id));
+        idCounter--;
     }
 }
