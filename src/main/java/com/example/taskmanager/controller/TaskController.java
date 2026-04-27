@@ -2,6 +2,8 @@ package com.example.taskmanager.controller;
 
 import com.example.taskmanager.dto.TaskCreateRequest;
 import com.example.taskmanager.dto.TaskResponse;
+import com.example.taskmanager.dto.TaskUpdateRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.taskmanager.service.TaskService;
@@ -27,15 +29,15 @@ public class TaskController {
     }
 
     @PostMapping
-    public ResponseEntity<TaskResponse> create(@RequestBody TaskCreateRequest request) {
+    public ResponseEntity<TaskResponse> create(@Valid @RequestBody TaskCreateRequest request) {
         TaskResponse response = service.create(request);
 
         return ResponseEntity.created(URI.create(URI_API_TASKS + "/" + response.getId())).body(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> change(@PathVariable Long id, @RequestBody TaskResponse response) {
-        return ResponseEntity.ok(service.change(id, response));
+    public ResponseEntity<TaskResponse> change(@PathVariable Long id, @Valid @RequestBody TaskUpdateRequest request) {
+        return ResponseEntity.ok(service.change(id, request));
     }
 
     @DeleteMapping("/{id}")

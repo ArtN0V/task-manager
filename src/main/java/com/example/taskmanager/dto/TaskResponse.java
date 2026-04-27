@@ -42,28 +42,4 @@ public class TaskResponse {
     public TaskStatus getStatus() {
         return status;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setDeadline(LocalDate deadline) {
-        this.deadline = deadline;
-    }
-
-    public void setTakenBy(String takenBy) {
-        this.takenBy = takenBy;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = status;
-    }
 }
