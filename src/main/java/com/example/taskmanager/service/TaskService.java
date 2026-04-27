@@ -3,6 +3,8 @@ package com.example.taskmanager.service;
 import com.example.taskmanager.dto.TaskCreateRequest;
 import com.example.taskmanager.dto.TaskResponse;
 import com.example.taskmanager.dto.TaskStatus;
+import com.example.taskmanager.dto.TaskUpdateRequest;
+import com.example.taskmanager.exeption.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,16 +47,21 @@ public class TaskService {
         return task;
     }
 
-    public TaskResponse change(Long id, TaskResponse response) {
+    public TaskResponse change(Long id, TaskUpdateRequest request) {
+        if (!tasks.stream().anyMatch(task -> task.getId().equals(id))) {
+            throw new NotFoundException("Task not found with id " + id);
+        }
+
         delete(id);
+        idCounter++;
 
         TaskResponse task = new TaskResponse(
-                idCounter++,
-                response.getTitle(),
-                response.getDescription(),
-                response.getDeadline(),
-                response.getTakenBy(),
-                response.getStatus()
+                id,
+                request.getTitle(),
+                request.getDescription(),
+                request.getDeadline(),
+                request.getTakenBy(),
+                request.getStatus()
         );
         tasks.add(task);
 
@@ -62,6 +69,10 @@ public class TaskService {
     }
 
     public void delete(Long id) {
+        if (!tasks.stream().anyMatch(task -> task.getId().equals(id))) {
+            throw new NotFoundException("Task not found with id " + id);
+        }
+
         tasks.removeIf(task -> task.getId().equals(id));
         idCounter--;
     }
